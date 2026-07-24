@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Orders from "./pages/Orders";
 import OrdersHistory from "./pages/OrdersHistory";
 import AdminRoute from "./components/admin/AdminRoute";
+import AdminPanel from "./pages/admin/AdminPanel";
 
 export default function App() {
   return (
@@ -28,12 +29,9 @@ export default function App() {
 
         {/* Admin */}
         {/* <Route path="/admin/login" element={<AdminLogin />} /> */}
-        <Route path="/admin/dashboard" element={<Home />} />
-        {/* // <AdminRoute>
-        //     <Dashboard />
-        // </AdminRoute> */}
-    {/* } */}
-{/* /> */}
+        <Route path="/admin/dashboard" element={ <AdminRoute><AdminPanel /></AdminRoute> }
+        
+ /> 
 
       </Routes>
     </BrowserRouter>
