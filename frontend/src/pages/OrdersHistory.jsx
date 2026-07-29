@@ -31,6 +31,30 @@ export default function OrdersHistory() {
     }
   };
 
+  const downloadInvoice = async (orderId) => {
+    try {
+      const res = await axios.get(
+        `http://127.0.0.1:8000/api/orders/${orderId}/invoice`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          responseType: "blob",
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `invoice-${orderId}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.log(err);
+      alert("Could not download invoice");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-7xl mx-auto">
@@ -102,14 +126,12 @@ export default function OrdersHistory() {
                     <h3 className="text-3xl font-bold text-green-600">
                       AED {order.total_price}
                     </h3>
-                    <a
-                      href={`http://127.0.0.1:8000/api/orders/${order.id}/invoice`}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      onClick={() => downloadInvoice(order.id)}
                       className="bg-pink-500 text-white px-5 py-3 rounded-xl hover:bg-pink-600"
                     >
                       Download Invoice
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
