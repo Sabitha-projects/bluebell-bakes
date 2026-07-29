@@ -114,7 +114,7 @@ export default function Home() {
                     </span>
                   )}
                 </Link>
-                <Link to="/orders-history" className="text-gray-600 hover:text-pink-500 text-sm">
+                <Link to="/my-orders" className="text-gray-600 hover:text-pink-500 text-sm">
                   My Orders
                 </Link>
                 <button onClick={logout} className="text-gray-500 hover:text-red-500 text-sm">

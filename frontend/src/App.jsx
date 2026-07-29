@@ -10,7 +10,8 @@ import AdminPanel from "./pages/admin/AdminPanel";
 // Shop
 import Home from "./pages/Home";
 import CustomerLogin from "./pages/CustomerLogin";
-//import Register from "./pages/Register";
+import Register from "./pages/Register";
+import Cart from "./pages/Cart";
 
 
 export default function App() {
@@ -22,10 +23,11 @@ export default function App() {
         <Route path="/" element={<Home />} />
         {/* <Route path="/" element={<AdminLogin />} /> */}
         <Route path="/login" element={<CustomerLogin />} />
-        {/* <Route path="/register" element={<Register />} /> */}
+        <Route path="/register" element={<Register />} />
 
         <Route path="/orders" element={<Orders />} />
-        <Route path="/orders-history" element={<OrdersHistory />} />
+        <Route path="/my-orders" element={<OrdersHistory />} />
+        <Route path="/cart" element={<Cart />} />
 
         {/* Admin */}
         <Route path="/admin/login" element={<AdminLogin />} />

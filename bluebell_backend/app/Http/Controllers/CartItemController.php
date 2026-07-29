@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CartItem;
 use Illuminate\Http\Request;
+use Psy\Readline\Hoa\Console;
 
 class CartItemController extends Controller
 {
@@ -12,6 +13,8 @@ class CartItemController extends Controller
         $items = CartItem::with('product')
             ->where('user_id', $request->user()->id)
             ->get();
+
+            
 
         $total = $items->sum(fn($item) => $item->product->price * $item->quantity);
         return response()->json(['items' => $items, 'total' => $total, 'count' => $items->sum('quantity')]);

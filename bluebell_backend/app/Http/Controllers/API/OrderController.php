@@ -9,6 +9,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\CartItem;
 
 class OrderController extends Controller
 {
@@ -24,66 +25,55 @@ class OrderController extends Controller
     // CREATE ORDER
     public function store(Request $request)
     {
+        $user = $request->user();
+
+        $cartItems = CartItem::with('product')
+            ->where('user_id', $user->id)
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return response()->json(['message' => 'Your cart is empty'], 422);
+        }
+
         DB::beginTransaction();
 
         try {
-
-            // CREATE ORDER
             $order = Order::create([
-
-                'user_id' => $auth()->id(),
-
-                'status' => 'Pending',
-
+                'user_id'     => $user->id,
+                'status'      => 'pending',
                 'total_price' => 0,
             ]);
 
             $total = 0;
 
-            // SAVE ITEMS
-            foreach ($request->items as $item) {
-
-                $product = Product::findOrFail(
-                    $item['product_id']
-                );
-
-                $subtotal =
-                    $product->price * $item['quantity'];
-
+            foreach ($cartItems as $cartItem) {
+                $subtotal = $cartItem->product->price * $cartItem->quantity;
                 $total += $subtotal;
 
                 OrderItem::create([
-
-                    'order_id' => $order->id,
-
-                    'product_id' => $product->id,
-
-                    'quantity' => $item['quantity'],
-
-                    'price' => $product->price,
+                    'order_id'   => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'quantity'   => $cartItem->quantity,
+                    'price'      => $cartItem->product->price,
                 ]);
             }
 
-            // UPDATE TOTAL
-            $order->update([
-                'total_price' => $total
-            ]);
+            $order->update(['total_price' => $total]);
+
+            // Clear the cart after ordering
+            CartItem::where('user_id', $user->id)->delete();
 
             DB::commit();
 
             return response()->json([
-                'message' => 'Order created successfully'
-            ]);
+                'message' => 'Order created successfully',
+                'order'   => $order->load('items.product'),
+            ], 201);
         } catch (\Exception $e) {
-
             DB::rollBack();
-
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
 
     public function invoice($id)
     {
@@ -114,7 +104,21 @@ class OrderController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Order status updated successfully','order' => $order
+            'message' => 'Order status updated successfully',
+            'order' => $order
         ]);
+    }
+
+    public function myOrders(Request $request)
+    {
+        $user = $request->user();
+
+        $orders = Order::with('items.product')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+            // dd($orders);
+
+        return response()->json($orders);
     }
 }

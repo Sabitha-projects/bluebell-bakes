@@ -45,8 +45,12 @@ Route::get('/orders/{id}/invoice', [OrderController::class, 'invoice']);
 
 Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
 Route::put('/orders/{id}/status', [OrderController::class, 'updateStatus']);
+Route::get('/my-orders', [OrderController::class, 'myOrders']);
 
-Route::apiResource('cart-items', CartItemController::class)->only(['index', 'store', 'update', 'destroy']);
+Route::get('/cart', [CartItemController::class, 'index']);
+Route::post('/cart', [CartItemController::class, 'store']);
+Route::put('/cart/{id}', [CartItemController::class, 'update']);
+Route::delete('/cart/{id}', [CartItemController::class, 'destroy']);
 Route::delete('/cart', [CartItemController::class, 'clear']);
 });
 
