@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-const API = "http://127.0.0.1:8000/api";
+const API = import.meta.env.VITE_API_URL;
 
 export default function Home() {
   const navigate = useNavigate();
@@ -179,7 +179,7 @@ export default function Home() {
               <div key={p.id} className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition overflow-hidden flex flex-col">
                 {p.image ? (
                   <img
-                    src={`http://127.0.0.1:8000/storage/${p.image}`}
+                    src={`${import.meta.env.VITE_STORAGE_URL}/${p.image}`}
                     alt={p.name}
                     className="w-full h-52 object-cover"
                   />

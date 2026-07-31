@@ -20,21 +20,22 @@ export default function OrdersHistory() {
 
   const getOrders = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/my-orders", {   // ✅ my-orders
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/my-orders`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setOrders(res.data);
+      // ensure it's always an array
+      setOrders(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.log(err);
+      setOrders([]);   // fallback to empty array on error
     } finally {
       setLoading(false);
     }
   };
-
   const downloadInvoice = async (orderId) => {
     try {
       const res = await axios.get(
-        `http://127.0.0.1:8000/api/orders/${orderId}/invoice`,
+        `${import.meta.env.VITE_API_URL}/orders/${orderId}/invoice`,
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: "blob",
@@ -100,7 +101,7 @@ export default function OrdersHistory() {
                         <div className="flex items-center gap-4">
                           {item.product?.image && (
                             <img
-                              src={`http://127.0.0.1:8000/storage/${item.product.image}`}
+                              src={`${import.meta.env.VITE_STORAGE_URL}/${item.product.image}`}
                               alt={item.product.name}
                               className="w-20 h-20 object-cover rounded-xl"
                             />

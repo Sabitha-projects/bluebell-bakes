@@ -19,7 +19,7 @@ export default function Orders() {
   // LOAD PRODUCTS
   const getProducts = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/products", {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/products`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,7 +34,7 @@ export default function Orders() {
   // LOAD CATEGORIES
   const getCategories = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/categories");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/categories`);
 
       setCategories(res.data);
     } catch (err) {

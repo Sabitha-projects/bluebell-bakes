@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-const API = "http://127.0.0.1:8000/api";
+const API = import.meta.env.VITE_API_URL;
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -117,7 +117,7 @@ export default function Cart() {
                 <div key={item.id} className="bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4">
                   {item.product?.image ? (
                     <img
-                      src={`http://127.0.0.1:8000/storage/${item.product.image}`}
+                      src={`${import.meta.env.VITE_STORAGE_URL}/${item.product.image}`}
                       alt={item.product?.name}
                       className="w-20 h-20 object-cover rounded-xl"
                     />

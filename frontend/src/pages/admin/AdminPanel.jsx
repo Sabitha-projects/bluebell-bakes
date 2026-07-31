@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import DashboardCharts from "../../components/DashboardCharts";
 
-const API = "http://127.0.0.1:8000/api";
+const API = import.meta.env.VITE_API_URL;
 
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -162,7 +162,7 @@ export default function AdminPanel() {
       name: p.name, price: p.price,
       description: p.description, category_id: p.category_id,
     });
-    if (p.image) setPreview(`http://127.0.0.1:8000/storage/${p.image}`);
+    if (p.image) setPreview(`${import.meta.env.VITE_STORAGE_URL}/${p.image}`);
     setImage(null);
     setShowProductForm(true);
   };
@@ -424,7 +424,7 @@ export default function AdminPanel() {
                 {products.map((p) => (
                   <div key={p.id} className={`${card} rounded-2xl shadow-lg overflow-hidden`}>
                     {p.image && (
-                      <img src={`http://127.0.0.1:8000/storage/${p.image}`} alt={p.name}
+                      <img src={`${import.meta.env.VITE_STORAGE_URL}/${p.image}`} alt={p.name}
                         className="w-full h-44 object-cover" />
                     )}
                     <div className="p-5">
