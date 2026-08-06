@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::table('admin', function (Blueprint $table) {
             
         });
-        DB::unprepared('UPDATE users SET role = "admin" WHERE email_id = "sabithamohandastn@gmail.com"');
+        DB::unprepared("UPDATE users SET role = 'admin' WHERE email = 'sabithamohandastn@gmail.com'");
     }
 
     /**
