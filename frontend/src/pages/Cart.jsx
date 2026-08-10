@@ -78,6 +78,13 @@ export default function Cart() {
     }
   };
 
+  const imageUrl = (img) => {
+  if (!img) return null;
+  return img.startsWith('http')
+    ? img                                              // Cloudinary URL — use directly
+    : `${import.meta.env.VITE_STORAGE_URL}/${img}`;    // old local path
+};
+
   if (loading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -117,7 +124,7 @@ export default function Cart() {
                 <div key={item.id} className="bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4">
                   {item.product?.image ? (
                     <img
-                      src={`${import.meta.env.VITE_STORAGE_URL}/${item.product.image}`}
+                      src={imageUrl(p.image)}
                       alt={item.product?.name}
                       className="w-20 h-20 object-cover rounded-xl"
                     />

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function OrdersHistory() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("customer_token");   // ✅ customer token
+  const token = localStorage.getItem("customer_token"); // ✅ customer token
 
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ export default function OrdersHistory() {
       setOrders(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.log(err);
-      setOrders([]);   // fallback to empty array on error
+      setOrders([]); // fallback to empty array on error
     } finally {
       setLoading(false);
     }
@@ -39,10 +39,12 @@ export default function OrdersHistory() {
         {
           headers: { Authorization: `Bearer ${token}` },
           responseType: "blob",
-        }
+        },
       );
 
-      const url = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
+      const url = window.URL.createObjectURL(
+        new Blob([res.data], { type: "application/pdf" }),
+      );
       const link = document.createElement("a");
       link.href = url;
       link.download = `invoice-${orderId}.pdf`;
@@ -56,12 +58,21 @@ export default function OrdersHistory() {
     }
   };
 
+  const imageUrl = (img) => {
+    if (!img) return null;
+    return img.startsWith("http")
+      ? img // Cloudinary URL — use directly
+      : `${import.meta.env.VITE_STORAGE_URL}/${img}`; // old local path
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-pink-500">My Orders 📦</h1>
-          <Link to="/" className="text-gray-600 hover:text-pink-500">← Continue Shopping</Link>
+          <Link to="/" className="text-gray-600 hover:text-pink-500">
+            ← Continue Shopping
+          </Link>
         </div>
 
         {loading ? (
@@ -71,15 +82,23 @@ export default function OrdersHistory() {
         ) : orders.length === 0 ? (
           <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
             <p className="text-5xl mb-4">📦</p>
-            <p className="text-gray-500 mb-6">You haven't placed any orders yet.</p>
-            <Link to="/" className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl">
+            <p className="text-gray-500 mb-6">
+              You haven't placed any orders yet.
+            </p>
+            <Link
+              to="/"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl"
+            >
               Start Shopping
             </Link>
           </div>
         ) : (
           <div className="space-y-6">
             {orders.map((order) => (
-              <div key={order.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div
+                key={order.id}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden"
+              >
                 {/* HEADER */}
                 <div className="flex justify-between items-center p-6 border-b">
                   <div>
@@ -97,18 +116,25 @@ export default function OrdersHistory() {
                 <div className="p-6">
                   <div className="space-y-4">
                     {order.items.map((item) => (
-                      <div key={item.id} className="flex justify-between items-center border rounded-xl p-4">
+                      <div
+                        key={item.id}
+                        className="flex justify-between items-center border rounded-xl p-4"
+                      >
                         <div className="flex items-center gap-4">
                           {item.product?.image && (
                             <img
-                              src={`${import.meta.env.VITE_STORAGE_URL}/${item.product.image}`}
+                              src={imageUrl(item.product.image)}
                               alt={item.product.name}
                               className="w-20 h-20 object-cover rounded-xl"
                             />
                           )}
                           <div>
-                            <h3 className="text-xl font-bold">{item.product?.name}</h3>
-                            <p className="text-gray-500">Quantity: {item.quantity}</p>
+                            <h3 className="text-xl font-bold">
+                              {item.product?.name}
+                            </h3>
+                            <p className="text-gray-500">
+                              Quantity: {item.quantity}
+                            </p>
                           </div>
                         </div>
                         <div className="text-right">

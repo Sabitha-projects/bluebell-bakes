@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -40,7 +42,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
@@ -48,29 +49,39 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'nullable|exists:categories,id',
         ]);
-        $imagePath = null;
 
-        if ($request->hasFile('image')) {
+        $imageUrl = null;
 
-            $imagePath = $request->file('image')->store('products', 'public');
-        }
+       if ($request->hasFile('image')) {
+    try {
+        $uploaded = Cloudinary::upload(
+            $request->file('image')->getRealPath(),
+            ['folder' => 'products']
+        );
+        $imageUrl = $uploaded->getSecurePath();
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'REAL ERROR: ' . $e->getMessage(),
+            'file_path' => $request->file('image')->getRealPath(),
+            'file_exists' => file_exists($request->file('image')->getRealPath()),
+        ], 500);
+    }
+}
 
         $product = Product::create([
-            'name' => $request->name,
-            'price' => $request->price,
+            'name'        => $request->name,
+            'price'       => $request->price,
             'description' => $request->description,
-            'image' => $imagePath,
+            'image'       => $imageUrl,          // full Cloudinary URL (or null)
             'category_id' => $request->category_id,
         ]);
 
         UserLog::create([
-            'user_id' => Auth::id(),
-            'action' => 'CREATE',
-            'module' => 'PRODUCT',
-            'module_id' => $product->id,
+            'user_id'    => Auth::id(),
+            'action'     => 'CREATE',
+            'module'     => 'PRODUCT',
+            'module_id'  => $product->id,
             'description' => 'Product created: ' . $product->name,
-            'image' => $imagePath,
-            'category_id' => $request->category_id,
         ]);
 
         return response()->json([
@@ -100,7 +111,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        // dump($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
@@ -108,29 +118,39 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'nullable|exists:categories,id',
         ]);
-        $imagePath = null;
+
+        // start with the existing image, so it's kept if no new one is uploaded
+        $imageUrl = null;
 
         if ($request->hasFile('image')) {
-
-            $imagePath = $request->file('image')->store('products', 'public');
+            $uploaded = Cloudinary::upload(
+                $request->file('image')->getRealPath(),
+                ['folder' => 'products']
+            );
+            $imageUrl = $uploaded->getSecurePath();
         }
+        // $imageUrl = $product->image;
+
+        // if ($request->hasFile('image')) {
+        //     // upload the new image to Cloudinary
+        //     $uploaded = $request->file('image')->storeOnCloudinary('products');
+        //     $imageUrl = $uploaded->getSecurePath();
+        // }
 
         $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
+            'name'        => $request->name,
+            'price'       => $request->price,
             'description' => $request->description,
-            'image' => $imagePath,
+            'image'       => $imageUrl,        // keeps old image, or uses new Cloudinary URL
             'category_id' => $request->category_id,
         ]);
 
         UserLog::create([
-            'user_id' => Auth::id(),
-            'action' => 'UPDATE',
-            'module' => 'PRODUCT',
-            'module_id' => $product->id,
+            'user_id'    => Auth::id(),
+            'action'     => 'UPDATE',
+            'module'     => 'PRODUCT',
+            'module_id'  => $product->id,
             'description' => 'Product updated: ' . $product->name,
-            'image' => $imagePath,
-            'category_id' => $request->category_id,
         ]);
 
         return response()->json([

@@ -162,7 +162,7 @@ export default function AdminPanel() {
       name: p.name, price: p.price,
       description: p.description, category_id: p.category_id,
     });
-    if (p.image) setPreview(`${import.meta.env.VITE_STORAGE_URL}/${p.image}`);
+    if (p.image) setPreview(p.image.startsWith('http') ? p.image : `${import.meta.env.VITE_STORAGE_URL}/${p.image}`);
     setImage(null);
     setShowProductForm(true);
   };
@@ -286,13 +286,20 @@ export default function AdminPanel() {
     darkMode ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300"
   }`;
 
+  const imageUrl = (img) => {
+  if (!img) return null;
+  return img.startsWith('http')
+    ? img                                              // Cloudinary URL — use directly
+    : `${import.meta.env.VITE_STORAGE_URL}/${img}`;    // old local path
+};
+
   return (
     <div className={`min-h-screen flex ${darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}>
       <ToastContainer position="top-right" autoClose={2500} />
 
       {/* ============ SIDEBAR ============ */}
       <aside className={`w-64 p-6 shadow-xl hidden md:block ${card}`}>
-        <h2 className="text-3xl font-bold text-pink-500 mb-10">BlueBell 🎂</h2>
+        <h2 className="text-3xl font-bold text-pink-500 mb-10">BlueBellBakes</h2>
         <nav className="space-y-3">
           <NavBtn id="dashboard"  label="Dashboard" />
           <NavBtn id="products"   label="Products" />
@@ -424,7 +431,7 @@ export default function AdminPanel() {
                 {products.map((p) => (
                   <div key={p.id} className={`${card} rounded-2xl shadow-lg overflow-hidden`}>
                     {p.image && (
-                      <img src={`${import.meta.env.VITE_STORAGE_URL}/${p.image}`} alt={p.name}
+                      <img src={imageUrl(p.image)} alt={p.name}
                         className="w-full h-44 object-cover" />
                     )}
                     <div className="p-5">

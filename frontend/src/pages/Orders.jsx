@@ -107,74 +107,60 @@ export default function Orders() {
     0,
   );
 
+  const imageUrl = (img) => {
+    if (!img) return null;
+    return img.startsWith("http")
+      ? img // Cloudinary URL — use directly
+      : `${import.meta.env.VITE_STORAGE_URL}/${img}`; // old local path
+  };
+
   return (
-  <div className="min-h-screen bg-gray-100 flex">
-
-    {/* CATEGORY SIDEBAR */}
-    <CategorySidebar
-      categories={categories}
-      selectedCategory={selectedCategory}
-      setSelectedCategory={setSelectedCategory}
-    />
-
-
-    {/* PRODUCTS */}
-    <div className="flex-1 p-6">
-
-      <h1 className="text-4xl font-bold text-pink-500 mb-8">
-        BlueBell Bakes 🧁
-      </h1>
-
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-
-        {filteredProducts.length > 0 ? (
-
-          filteredProducts.map((product) => (
-
-            <ProductCard
-              key={product.id}
-              product={product}
-              addToCart={addToCart}
-            />
-
-          ))
-
-        ) : (
-
-          <p className="text-gray-500">
-            No products available
-          </p>
-
-        )}
-
-      </div>
-
-    </div>
-
-
-
-    {/* CART PANEL */}
-    <div className="w-80">
-
-      <CartPanel
-        cart={cart}
-        total={total}
-        removeFromCart={removeFromCart}
-        updateQuantity={updateQuantity}
-        setCart={setCart}
+    <div className="min-h-screen bg-gray-100 flex">
+      {/* CATEGORY SIDEBAR */}
+      <CategorySidebar
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
       />
 
+      {/* PRODUCTS */}
+      <div className="flex-1 p-6">
+        <h1 className="text-4xl font-bold text-pink-500 mb-8">
+          BlueBell Bakes 🧁
+        </h1>
 
-      {/* CHECKOUT BUTTON */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                addToCart={addToCart}
+              />
+            ))
+          ) : (
+            <p className="text-gray-500">No products available</p>
+          )}
+        </div>
+      </div>
 
-      {cart.length > 0 && (
+      {/* CART PANEL */}
+      <div className="w-80">
+        <CartPanel
+          cart={cart}
+          total={total}
+          removeFromCart={removeFromCart}
+          updateQuantity={updateQuantity}
+          setCart={setCart}
+        />
 
-        <div className="p-4">
+        {/* CHECKOUT BUTTON */}
 
-          <button
-            onClick={placeOrder}
-            className="
+        {cart.length > 0 && (
+          <div className="p-4">
+            <button
+              onClick={placeOrder}
+              className="
               w-full
               bg-pink-500
               text-white
@@ -183,17 +169,12 @@ export default function Orders() {
               hover:bg-pink-600
               transition
             "
-          >
-            Place Order
-          </button>
-
-        </div>
-
-      )}
-
+            >
+              Place Order
+            </button>
+          </div>
+        )}
+      </div>
     </div>
-
-
-  </div>
-);
+  );
 }
