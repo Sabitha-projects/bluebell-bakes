@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 100" width="440" height="100">
+  <defs>
+    <linearGradient id="blueGradH" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="pinkGradH" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+    <linearGradient id="barGradH" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="50%" stop-color="#db2777"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ===== BELLS (compact, left side) ===== -->
+  <!-- bar -->
+  <rect x="12" y="16" width="86" height="6" rx="3" fill="url(#barGradH)"/>
+  <circle cx="12" cy="19" r="5" fill="#1e3a8a"/>
+  <circle cx="98" cy="19" r="5" fill="#1e3a8a"/>
+
+  <!-- left blue bell -->
+  <g>
+    <line x1="34" y1="22" x2="34" y2="38" stroke="#1d4ed8" stroke-width="2"/>
+    <circle cx="34" cy="38" r="3" fill="#1d4ed8"/>
+    <path d="M34 40 C25 40, 21 54, 19 66 C18 71, 15 73, 13 76 L55 76 C53 73, 50 71, 49 66 C47 54, 43 40, 34 40 Z"
+          fill="url(#blueGradH)" stroke="#1e40af" stroke-width="1.5"/>
+    <ellipse cx="34" cy="76" rx="21" ry="3.5" fill="#1e40af"/>
+    <circle cx="34" cy="82" r="4" fill="#1e3a8a"/>
+    <ellipse cx="28" cy="56" rx="3" ry="8" fill="#dbeafe" opacity="0.5"/>
+  </g>
+
+  <!-- center pink bell -->
+  <g>
+    <line x1="55" y1="22" x2="55" y2="33" stroke="#be185d" stroke-width="2.2"/>
+    <circle cx="55" cy="33" r="3.5" fill="#be185d"/>
+    <path d="M55 35 C43 35, 37 53, 35 71 C34 78, 30 81, 27 85 L83 85 C80 81, 76 78, 75 71 C73 53, 67 35, 55 35 Z"
+          fill="url(#pinkGradH)" stroke="#9d174d" stroke-width="1.8"/>
+    <ellipse cx="55" cy="85" rx="28" ry="4.5" fill="#9d174d"/>
+    <circle cx="55" cy="93" r="4.5" fill="#831843"/>
+    <ellipse cx="47" cy="55" rx="4" ry="11" fill="#fce7f3" opacity="0.5"/>
+  </g>
+
+  <!-- right blue bell -->
+  <g>
+    <line x1="76" y1="22" x2="76" y2="36" stroke="#1d4ed8" stroke-width="2"/>
+    <circle cx="76" cy="36" r="3" fill="#1d4ed8"/>
+    <path d="M76 38 C67 38, 62 52, 60 65 C59 70, 56 73, 54 76 L98 76 C96 73, 93 70, 92 65 C90 52, 85 38, 76 38 Z"
+          fill="url(#blueGradH)" stroke="#1e40af" stroke-width="1.5"/>
+    <ellipse cx="76" cy="76" rx="22" ry="3.5" fill="#1e40af"/>
+    <circle cx="76" cy="82" r="4" fill="#1e3a8a"/>
+    <ellipse cx="70" cy="56" rx="3" ry="9" fill="#dbeafe" opacity="0.5"/>
+  </g>
+
+  <!-- ===== TEXT (right side) ===== -->
+  <text x="122" y="52" font-family="Georgia, serif" font-size="30" font-weight="bold">
+    <tspan fill="#2563eb">Blue</tspan><tspan fill="#db2777" dx="10">Bell Bakes</tspan>
+  </text>
+  <text x="123" y="72" font-family="Arial, sans-serif" font-size="10" fill="#9ca3af" letter-spacing="2">FRESHLY BAKED IN DUBAI</text>
+</svg>

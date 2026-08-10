@@ -9,7 +9,7 @@ export default function ProductCard({
       {/* IMAGE */}
       {product.image && (
         <img
-          src={`${import.meta.env.VITE_STORAGE_URL}/${product.image}`}
+          src={product.image?.startsWith('http') ? product.image : `${import.meta.env.VITE_STORAGE_URL}/${product.image}`}
           alt={product.name}
           className="w-full h-52 object-cover"
         />

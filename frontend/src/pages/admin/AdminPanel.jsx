@@ -299,7 +299,7 @@ export default function AdminPanel() {
 
       {/* ============ SIDEBAR ============ */}
       <aside className={`w-64 p-6 shadow-xl hidden md:block ${card}`}>
-        <h2 className="text-3xl font-bold text-pink-500 mb-10">BlueBellBakes</h2>
+        <img src="/bluebell_logo_header.svg" alt="Blue Bell Bakes" className="w-full mb-8" />
         <nav className="space-y-3">
           <NavBtn id="dashboard"  label="Dashboard" />
           <NavBtn id="products"   label="Products" />

@@ -112,10 +112,13 @@ export default function Home() {
       {/* ============ HEADER ============ */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center flex-wrap gap-4">
-          <Link to="/" className="text-2xl md:text-3xl font-bold text-pink-500">
-            Blue Bell Bakes 🎂
+          <Link to="/">
+            <img
+              src="/bluebell_logo_header.svg"
+              alt="Blue Bell Bakes"
+              className="h-20"
+            />
           </Link>
-
           <div className="flex items-center gap-3">
             {customerToken ? (
               <>
