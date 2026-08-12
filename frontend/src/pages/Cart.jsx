@@ -79,11 +79,11 @@ export default function Cart() {
   };
 
   const imageUrl = (img) => {
-  if (!img) return null;
-  return img.startsWith('http')
-    ? img                                              // Cloudinary URL — use directly
-    : `${import.meta.env.VITE_STORAGE_URL}/${img}`;    // old local path
-};
+    if (!img) return null;
+    return img.startsWith("http")
+      ? img // Cloudinary URL — use directly
+      : `${import.meta.env.VITE_STORAGE_URL}/${img}`; // old local path
+  };
 
   if (loading) {
     return (
@@ -100,8 +100,12 @@ export default function Cart() {
       {/* HEADER */}
       <header className="bg-white shadow-sm">
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold text-pink-500">Blue Bell Bakes 🎂</Link>
-          <Link to="/" className="text-gray-600 hover:text-pink-500 text-sm">← Continue Shopping</Link>
+          <Link to="/" className="text-2xl font-bold text-pink-500">
+            Blue Bell Bakes 🎂
+          </Link>
+          <Link to="/" className="text-gray-600 hover:text-pink-500 text-sm">
+            ← Continue Shopping
+          </Link>
         </div>
       </header>
 
@@ -112,7 +116,10 @@ export default function Cart() {
           <div className="bg-white rounded-2xl shadow-sm p-12 text-center">
             <p className="text-5xl mb-4">🛒</p>
             <p className="text-gray-500 mb-6">Your cart is empty.</p>
-            <Link to="/" className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl">
+            <Link
+              to="/"
+              className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl"
+            >
               Browse Products
             </Link>
           </div>
@@ -121,20 +128,29 @@ export default function Cart() {
             {/* ITEMS */}
             <div className="lg:col-span-2 space-y-4">
               {items.map((item) => (
-                <div key={item.id} className="bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4">
+                <div
+                  key={item.id}
+                  className="bg-white rounded-2xl shadow-sm p-4 flex items-center gap-4"
+                >
                   {item.product?.image ? (
                     <img
-                      src={imageUrl(p.image)}
+                      src={imageUrl(item.product?.image)}
                       alt={item.product?.name}
                       className="w-20 h-20 object-cover rounded-xl"
                     />
                   ) : (
-                    <div className="w-20 h-20 bg-pink-50 rounded-xl flex items-center justify-center text-3xl">🧁</div>
+                    <div className="w-20 h-20 bg-pink-50 rounded-xl flex items-center justify-center text-3xl">
+                      🧁
+                    </div>
                   )}
 
                   <div className="flex-1">
-                    <h3 className="font-bold text-gray-800">{item.product?.name}</h3>
-                    <p className="text-pink-500 font-semibold">AED {item.product?.price}</p>
+                    <h3 className="font-bold text-gray-800">
+                      {item.product?.name}
+                    </h3>
+                    <p className="text-pink-500 font-semibold">
+                      AED {item.product?.price}
+                    </p>
                   </div>
 
                   {/* QUANTITY */}
@@ -142,12 +158,16 @@ export default function Cart() {
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold"
-                    >−</button>
+                    >
+                      −
+                    </button>
                     <span className="w-8 text-center">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold"
-                    >+</button>
+                    >
+                      +
+                    </button>
                   </div>
 
                   {/* SUBTOTAL */}
@@ -158,7 +178,9 @@ export default function Cart() {
                     <button
                       onClick={() => removeItem(item.id)}
                       className="text-red-500 hover:text-red-600 text-xs mt-1"
-                    >Remove</button>
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
               ))}
@@ -166,7 +188,9 @@ export default function Cart() {
 
             {/* SUMMARY */}
             <div className="bg-white rounded-2xl shadow-sm p-6 h-fit">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Order Summary</h2>
+              <h2 className="text-xl font-bold text-gray-800 mb-4">
+                Order Summary
+              </h2>
               <div className="flex justify-between text-gray-600 mb-2">
                 <span>Items</span>
                 <span>{items.reduce((sum, i) => sum + i.quantity, 0)}</span>
