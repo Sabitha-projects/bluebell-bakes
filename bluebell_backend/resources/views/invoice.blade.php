@@ -48,7 +48,7 @@
 
 <body>
 
-    <h1>Blue Bell Bakes 🎂</h1>
+    <h1>Blue Bell Bakes </h1>
 
     <h2>Invoice #{{ $order->id }}</h2>
 
@@ -95,11 +95,11 @@
                     </td>
 
                     <td>
-                        ₹ {{ $item->price }}
+                        AED {{ $item->price }}
                     </td>
 
                     <td>
-                        ₹ {{ $item->price * $item->quantity }}
+                        AED {{ $item->price * $item->quantity }}
                     </td>
 
                 </tr>
@@ -113,7 +113,7 @@
     <div class="total">
 
         Grand Total:
-        ₹ {{ $order->total_price }}
+        AED {{ $order->total_price }}
 
     </div>
 
