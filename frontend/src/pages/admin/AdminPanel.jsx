@@ -128,6 +128,7 @@ export default function AdminPanel() {
       data.append("price", productForm.price);
       data.append("description", productForm.description);
       data.append("category_id", productForm.category_id);
+      data.append("available_today", productForm.available_today);
       if (image) data.append("image", image);
 
       if (editingProductId) {
@@ -412,6 +413,15 @@ export default function AdminPanel() {
                     onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
                     className={input}
                   />
+                  <select
+                    value={productForm.available_today}
+                    onChange={(e) => setProductForm({ ...productForm, available_today: e.target.value })}
+                    className={input}
+                  >
+                    <option value="">Available Today?</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                  </select>
 
                   <div className="flex gap-3">
                     <button type="submit" className="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2.5 rounded-xl">
@@ -439,6 +449,9 @@ export default function AdminPanel() {
                       <h3 className="text-xl font-bold mb-1">{p.name}</h3>
                       <p className="text-gray-500 text-sm mb-3">{p.description}</p>
                       <p className="text-pink-500 text-xl font-bold mb-4">AED {p.price}</p>
+                      {/* <p className="text-green-500 font-semibold">
+                        {p.available_today ? "Available Today!" : "Not Available Today"}
+                      </p> */}
                       <div className="flex gap-2">
                         <button onClick={() => editProduct(p)}
                           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Edit</button>

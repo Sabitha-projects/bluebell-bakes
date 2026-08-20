@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
@@ -52,8 +53,14 @@ Route::post('/cart', [CartItemController::class, 'store']);
 Route::put('/cart/{id}', [CartItemController::class, 'update']);
 Route::delete('/cart/{id}', [CartItemController::class, 'destroy']);
 Route::delete('/cart', [CartItemController::class, 'clear']);
+
+// Stripe Payment Intent Route
+Route::post('/payment/intent', [PaymentController::class, 'createIntent']);
 });
 
 Route::apiResource('products', ProductController::class);
 Route::apiResource('categories', CategoryController::class);
+
+
+
     

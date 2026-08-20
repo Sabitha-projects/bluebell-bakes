@@ -3,6 +3,11 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "../components/CheckoutForm";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 const API = import.meta.env.VITE_API_URL;
 
 export default function Cart() {
@@ -14,6 +19,9 @@ export default function Cart() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [placing, setPlacing] = useState(false);
+
+  const [showPayment, setShowPayment] = useState(false);
+  const [clientSecret, setClientSecret] = useState(null);
 
   // ===== PROTECT: must be logged in =====
   useEffect(() => {
@@ -65,14 +73,28 @@ export default function Cart() {
   };
 
   // ===== PLACE ORDER =====
-  const placeOrder = async () => {
+  // const placeOrder = async () => {
+  //   setPlacing(true);
+  //   try {
+  //     await axios.post(`${API}/orders`, {}, auth);
+  //     toast.success("Order placed successfully! 🎉");
+  //     setTimeout(() => navigate("/my-orders"), 1500);
+  //   } catch (err) {
+  //     toast.error("Could not place order");
+  //   } finally {
+  //     setPlacing(false);
+  //   }
+  // };
+
+  // ===== START PAYMENT (get client secret) =====
+  const startPayment = async () => {
     setPlacing(true);
     try {
-      await axios.post(`${API}/orders`, {}, auth);
-      toast.success("Order placed successfully! 🎉");
-      setTimeout(() => navigate("/my-orders"), 1500);
+      const res = await axios.post(`${API}/payment/intent`, {}, auth);
+      setClientSecret(res.data.clientSecret);
+      setShowPayment(true);
     } catch (err) {
-      toast.error("Could not place order");
+      toast.error("Could not start payment");
     } finally {
       setPlacing(false);
     }
@@ -200,13 +222,32 @@ export default function Cart() {
                 <span className="text-pink-500">AED {total.toFixed(2)}</span>
               </div>
 
-              <button
+              {/* <button
                 onClick={placeOrder}
                 disabled={placing}
                 className="w-full mt-6 bg-pink-500 hover:bg-pink-600 disabled:opacity-60 text-white py-3 rounded-xl font-semibold"
               >
                 {placing ? "Placing order…" : "Place Order"}
-              </button>
+              </button> */}
+              {!showPayment ? (
+                <button
+                  onClick={startPayment}
+                  disabled={placing}
+                  className="w-full mt-6 bg-pink-500 hover:bg-pink-600 disabled:opacity-60 text-white py-3 rounded-xl font-semibold"
+                >
+                  {placing ? "Loading…" : "Proceed to Payment"}
+                </button>
+              ) : (
+                <div className="mt-6">
+                  <Elements stripe={stripePromise} options={{ clientSecret }}>
+                    <CheckoutForm
+                      clientSecret={clientSecret}
+                      total={total}
+                      onCancel={() => setShowPayment(false)}
+                    />
+                  </Elements>
+                </div>
+              )}
             </div>
           </div>
         )}

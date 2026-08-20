@@ -59,14 +59,14 @@ class ProductController extends Controller
             ['folder' => 'products']
         );
         $imageUrl = $uploaded->getSecurePath();
-    } catch (\Exception $e) {
+        } catch (\Exception $e) {
         return response()->json([
             'message' => 'REAL ERROR: ' . $e->getMessage(),
             'file_path' => $request->file('image')->getRealPath(),
             'file_exists' => file_exists($request->file('image')->getRealPath()),
         ], 500);
+        }
     }
-}
 
         $product = Product::create([
             'name'        => $request->name,
@@ -74,6 +74,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'image'       => $imageUrl,          // full Cloudinary URL (or null)
             'category_id' => $request->category_id,
+            'available_today' => $request->available_today ? true : false,
         ]);
 
         UserLog::create([
@@ -143,6 +144,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'image'       => $imageUrl,        // keeps old image, or uses new Cloudinary URL
             'category_id' => $request->category_id,
+            'available_today' => $request->available_today? true : false,
         ]);
 
         UserLog::create([
@@ -151,6 +153,7 @@ class ProductController extends Controller
             'module'     => 'PRODUCT',
             'module_id'  => $product->id,
             'description' => 'Product updated: ' . $product->name,
+            
         ]);
 
         return response()->json([
